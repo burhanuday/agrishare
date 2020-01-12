@@ -67,16 +67,7 @@ const styles = StyleSheet.create({
 });
 
 Auth.navigationOptions = {
-  title: "",
-  headerStyle: {
-    shadowOpacity: 0,
-    shadowColor: "transparent",
-    shadowRadius: 0,
-    shadowOffset: {
-      height: 0
-    },
-    elevation: 0
-  }
+  title: ""
 };
 
 export default Auth;

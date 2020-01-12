@@ -14,11 +14,13 @@ const defaultNavigationOptions = {
     })
   },
   headerStyle: {
+    shadowOpacity: 0,
     shadowColor: "transparent",
     shadowRadius: 0,
     shadowOffset: {
       height: 0
-    }
+    },
+    elevation: 0
   }
 };
 

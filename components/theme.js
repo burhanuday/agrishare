@@ -4,11 +4,11 @@ const { width, height } = Dimensions.get("window");
 export const COLORS = {
   // default font color
   font: "#000000",
-  
+
   // base colors
-  primary: "#4630EB",
-  secondary: "#A3A1F7",
-  tertiary: "#FFE358",
+  primary: "#769BFF",
+  secondary: "#8AA9FF",
+  tertiary: "#9DB7FF",
 
   // non-colors
   black: "#000020",
