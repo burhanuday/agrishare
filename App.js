@@ -7,7 +7,7 @@ import store from "./store/store";
 if (__DEV__) {
   // eslint-disable-next-line
   import("./reactotron-config").then(() =>
-    console.log("Reactotron Configured")
+    console.tron.log("Reactotron Configured")
   );
 }
 

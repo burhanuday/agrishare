@@ -14,5 +14,7 @@ Reactotron.setAsyncStorageHandler(AsyncStorage)
 Reactotron.connect(); // Connect with reactotron
 Reactotron.clear(); // Clear the logs.
 
+console.tron = Reactotron;
+
 const sagaMonitor = Reactotron.createSagaMonitor();
 export { sagaMonitor };
