@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 
 import Auth from "./screens/Auth/Auth";
 import HomeScreen from "./screens/Home/Home";
+import BookTransportScreen from "./screens/BookTransport/BookTransport";
 
 const defaultNavigationOptions = {
   headerTitleStyle: {
@@ -26,7 +27,8 @@ const defaultNavigationOptions = {
 
 const AuthenticatedStack = createStackNavigator(
   {
-    Home: HomeScreen
+    Home: HomeScreen,
+    BookTransport: BookTransportScreen
   },
   {
     defaultNavigationOptions: defaultNavigationOptions

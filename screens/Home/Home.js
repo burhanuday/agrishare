@@ -19,7 +19,7 @@ const Home = props => {
             icon="google-maps"
             title="Book transport"
             onPress={() => {
-              console.tron.log("press");
+              props.navigation.push("BookTransport")
             }}
           />
           <NavigationItem icon="truck-delivery" title="See booked transport" />
