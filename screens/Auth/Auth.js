@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { Block, Text, Input, Button, Card } from "../../components/index";
+import axios from "../../axios/axios";
 
 const Auth = props => {
   const [phone, setPhone] = useState("");
+
+  const login = () => {
+    if (phone.length !== 10) {
+      console.tron.log("Check phone number length");
+    }
+  };
 
   return (
     <Block white safe space="between">
