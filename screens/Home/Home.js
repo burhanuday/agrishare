@@ -19,25 +19,41 @@ const Home = props => {
             icon="google-maps"
             title="Book transport"
             onPress={() => {
-              props.navigation.push("BookTransport")
+              props.navigation.push("BookTransport");
             }}
           />
-          <NavigationItem icon="truck-delivery" title="See booked transport" />
+          <NavigationItem
+            icon="truck-delivery"
+            title="See booked transport"
+            onPress={() => {
+              props.navigation.push("SeeBookedTransport");
+            }}
+          />
         </Block>
       </Block>
     </Block>
   );
 };
 
-Home.navigationOptions = {
-  title: "",
-  headerRight: () => (
-    <TouchableWithoutFeedback onPress={() => console.tron.log("Logout")}>
-      <Block marginRight={10} marginTop={10}>
-        <MaterialCommunityIcons name="logout-variant" color="black" size={30} />
-      </Block>
-    </TouchableWithoutFeedback>
-  )
+Home.navigationOptions = ({ navigation }) => {
+  return {
+    title: "",
+    headerRight: () => (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate("Unauthenticated");
+        }}
+      >
+        <Block marginRight={10} marginTop={10}>
+          <MaterialCommunityIcons
+            name="logout-variant"
+            color="black"
+            size={30}
+          />
+        </Block>
+      </TouchableWithoutFeedback>
+    )
+  };
 };
 
 export default Home;

@@ -11,6 +11,9 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import imageMarker from "../../assets/marker-128.png";
+import PlacesAutoComplete from "./PlacesAutoComplete/PlacesAutoComplete";
+import moment from "moment";
+import axios from "../../axios/axios";
 
 const BookTransport = props => {
   const [region, setRegion] = useState({
@@ -20,7 +23,18 @@ const BookTransport = props => {
     longitudeDelta: 0.0421
   });
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showStartDatePicker, setShowStartDatePicker] = useState({
+    visible: false,
+    date: null
+  });
+
+  const [showEndDatePicker, setShowEndDatePicker] = useState({
+    visible: false,
+    date: null
+  });
+
+  const [destination, setDestination] = useState(null);
+  const [capacity, setCapacity] = useState(null);
 
   const getCurrentLocation = async () => {
     let location = await Location.getCurrentPositionAsync({});
@@ -52,6 +66,8 @@ const BookTransport = props => {
     setRegion(region);
   };
 
+  const createTransportRequest = () => {};
+
   return (
     <Block safe>
       <MapView
@@ -64,9 +80,7 @@ const BookTransport = props => {
       <Block style={styles.markerFixed}>
         <Image style={styles.marker} source={imageMarker} />
       </Block>
-      {/* <SafeAreaView style={styles.footer}>
-        <Text style={styles.region}>{JSON.stringify(region, null, 2)}</Text>
-      </SafeAreaView> */}
+
       <KeyboardAvoidingView
         style={styles.bottom}
         keyboardVerticalOffset={64}
@@ -76,56 +90,65 @@ const BookTransport = props => {
           <Text bold h3 black>
             Where to?
           </Text>
-          <Input
-            marginTop={15}
-            onChangeText={val => console.tron.log(val)}
-            value=""
-            placeholder="Enter destination"
-          />
+          <PlacesAutoComplete onChange={setDestination} />
 
           <Input
             marginTop={10}
-            onChangeText={val => console.tron.log(val)}
-            value=""
+            onChangeText={val => setCapacity(val)}
+            value={capacity}
             placeholder="Enter capacity"
+            keyboardType="number-pad"
           />
 
           <Block row>
             <Button
               flex={1}
               marginRight={5}
-              onPress={() => setShowDatePicker(!showDatePicker)}
+              onPress={() => {
+                setShowStartDatePicker({
+                  ...showStartDatePicker,
+                  visible: true
+                });
+              }}
               marginTop={10}
               primary
               outlined
             >
               <Block middle center>
                 <Text primary bold h3>
-                  CHOOSE START
+                  {moment(showStartDatePicker.date).format("DD-MM-YYYY") ===
+                  "Invalid date"
+                    ? "CHOOSE START"
+                    : moment(showStartDatePicker.date).format("DD-MM-YYYY")}
                 </Text>
               </Block>
             </Button>
+
             <Button
               flex={1}
               marginLeft={5}
-              onPress={() => setShowDatePicker(!showDatePicker)}
+              onPress={() => {
+                setShowEndDatePicker({
+                  ...showEndDatePicker,
+                  visible: true
+                });
+              }}
               marginTop={10}
               primary
               outlined
             >
               <Block middle center>
                 <Text primary bold h3>
-                  CHOOSE END
+                  {moment(showEndDatePicker.date).format("DD-MM-YYYY") ===
+                  "Invalid date"
+                    ? "CHOOSE END"
+                    : moment(showEndDatePicker.date).format("DD-MM-YYYY")}
                 </Text>
               </Block>
             </Button>
           </Block>
 
-          <Button
-            onPress={() => setShowDatePicker(true)}
-            marginTop={10}
-            primary
-          >
+          <Button marginTop={10} primary>
             <Block middle center>
               <Text white bold h3>
                 SCHEDULE
@@ -133,14 +156,33 @@ const BookTransport = props => {
             </Block>
           </Button>
 
-          {showDatePicker && (
+          {showStartDatePicker.visible && (
             <DateTimePicker
-              value={new Date("2020-06-12T14:42:42")}
+              value={new Date()}
               mode="date"
               is24Hour={true}
               display="default"
               onChange={(event, date) => {
-                setShowDatePicker(false);
+                setShowStartDatePicker({
+                  visible: false,
+                  date: date
+                });
+                console.tron.log(event, date);
+              }}
+            />
+          )}
+
+          {showEndDatePicker.visible && (
+            <DateTimePicker
+              value={new Date()}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={(event, date) => {
+                setShowEndDatePicker({
+                  visible: false,
+                  date: date
+                });
                 console.tron.log(event, date);
               }}
             />
@@ -174,19 +216,8 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   bottomSafe: {
-    height: 30
+    height: 0
   }
-  /* footer: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    bottom: 0,
-    position: "absolute",
-    width: "100%"
-  },
-  region: {
-    color: "#fff",
-    lineHeight: 20,
-    margin: 20
-  } */
 });
 
 BookTransport.navigationOptions = {
