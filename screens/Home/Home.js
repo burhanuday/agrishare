@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableWithoutFeedback } from "react-native";
+import { TouchableWithoutFeedback, AsyncStorage } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Block, Text } from "../../components/index";
 import NavigationItem from "./NavigationItem/NavigationItem";
@@ -40,7 +40,12 @@ Home.navigationOptions = ({ navigation }) => {
     title: "",
     headerRight: () => (
       <TouchableWithoutFeedback
-        onPress={() => {
+        onPress={async () => {
+          try {
+            await AsyncStorage.multiRemove(["_id", "name", "phone"]);
+          } catch (e) {
+            console.tron.log("error removing logout keys", e);
+          }
           navigation.navigate("Unauthenticated");
         }}
       >

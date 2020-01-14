@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, AsyncStorage, ActivityIndicator } from "react-native";
 import {
   Block,
@@ -13,6 +13,20 @@ import axios from "../../axios/axios";
 const Auth = props => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const smoothLogin = async () => {
+    const _id = await AsyncStorage.getItem("_id");
+    console.tron.log("id on auth", _id);
+    return _id;
+  };
+
+  useEffect(() => {
+    smoothLogin().then(_id => {
+      if (_id) {
+        props.navigation.navigate("Authenticated");
+      }
+    });
+  }, []);
 
   if (loading) {
     return (
