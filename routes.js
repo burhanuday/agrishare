@@ -6,6 +6,7 @@ import Auth from "./screens/Auth/Auth";
 import HomeScreen from "./screens/Home/Home";
 import BookTransportScreen from "./screens/BookTransport/BookTransport";
 import SeeBookedTransportScreen from "./screens/SeeBookedTransport/SeeBookedTransport";
+import DestinationPickerScreen from "./screens/BookTransport/DestinationPicker/DestinationPicker";
 
 const defaultNavigationOptions = {
   headerTitleStyle: {
@@ -30,7 +31,8 @@ const AuthenticatedStack = createStackNavigator(
   {
     Home: HomeScreen,
     BookTransport: BookTransportScreen,
-    SeeBookedTransport: SeeBookedTransportScreen
+    SeeBookedTransport: SeeBookedTransportScreen,
+    DestinationPicker: DestinationPickerScreen
   },
   {
     defaultNavigationOptions: defaultNavigationOptions

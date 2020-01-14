@@ -25,8 +25,14 @@ const PlacesAutoComplete = props => {
         // 'details' is provided when fetchDetails = true
         //console.tron.log(data, details);
         const geometry = details.geometry.location;
-        console.tron.log("geometry", geometry);
-        props.onChange(geometry);
+        const formatted_address = details.formatted_address;
+        console.tron.log(
+          "geometry",
+          geometry,
+          "formatted_address",
+          formatted_address
+        );
+        props.onChange({ geometry, formatted_address });
       }}
       getDefaultValue={() => ""}
       query={{
@@ -36,7 +42,7 @@ const PlacesAutoComplete = props => {
         //types: "(cities)" // default: 'geocode'
         types: "establishment"
       }}
-  /*     styles={{
+      /*     styles={{
         textInputContainer: {
           width: "100%"
         },

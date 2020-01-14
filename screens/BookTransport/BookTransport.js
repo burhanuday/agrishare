@@ -11,7 +11,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import imageMarker from "../../assets/marker-128.png";
-import PlacesAutoComplete from "./PlacesAutoComplete/PlacesAutoComplete";
+
 import moment from "moment";
 import axios from "../../axios/axios";
 
@@ -90,15 +90,46 @@ const BookTransport = props => {
           <Text bold h3 black>
             Where to?
           </Text>
-          <PlacesAutoComplete onChange={setDestination} />
 
-          <Input
+          <Button
+            flex={1}
+            marginRight={5}
+            onPress={() => {
+              props.navigation.push("DestinationPicker", {
+                setDestination: geometry => {
+                  setDestination(geometry);
+                  props.navigation.pop();
+                }
+              });
+            }}
             marginTop={10}
-            onChangeText={val => setCapacity(val)}
-            value={capacity}
-            placeholder="Enter capacity"
-            keyboardType="number-pad"
-          />
+            primary
+            outlined
+          >
+            <Block middle center>
+              <Text primary bold h3 subtitle>
+                {destination.formatted_address || "PICK DESTINATION"}
+              </Text>
+            </Block>
+          </Button>
+
+          <Block row>
+            <Block center middle flex={0} marginRight={10}>
+              <Text>Capacity:</Text>
+            </Block>
+            <Block>
+              <Input
+                marginTop={10}
+                onChangeText={val => setCapacity(val)}
+                value={capacity}
+                placeholder="Enter capacity"
+                keyboardType="number-pad"
+              />
+            </Block>
+            <Block flex={0} middle center marginLeft={10} marginRight={10}>
+              <Text subtitle gray>units</Text>
+            </Block>
+          </Block>
 
           <Block row>
             <Button
@@ -115,7 +146,7 @@ const BookTransport = props => {
               outlined
             >
               <Block middle center>
-                <Text primary bold h3>
+                <Text primary bold h3 subtitle>
                   {moment(showStartDatePicker.date).format("DD-MM-YYYY") ===
                   "Invalid date"
                     ? "CHOOSE START"
@@ -138,7 +169,7 @@ const BookTransport = props => {
               outlined
             >
               <Block middle center>
-                <Text primary bold h3>
+                <Text primary bold h3 subtitle>
                   {moment(showEndDatePicker.date).format("DD-MM-YYYY") ===
                   "Invalid date"
                     ? "CHOOSE END"
