@@ -10,6 +10,10 @@ export const COLORS = {
   secondary: "#8AA9FF",
   tertiary: "#9DB7FF",
 
+  /* primary: "#000000",
+  secondary: "#000000",
+  tertiary: "#000000", */
+
   // non-colors
   black: "#000020",
   white: "#FFFFFF",

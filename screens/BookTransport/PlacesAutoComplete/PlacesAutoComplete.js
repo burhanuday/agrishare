@@ -26,13 +26,16 @@ const PlacesAutoComplete = props => {
         //console.tron.log(data, details);
         const geometry = details.geometry.location;
         const formatted_address = details.formatted_address;
+        const description = data.description;
         console.tron.log(
           "geometry",
           geometry,
           "formatted_address",
-          formatted_address
+          formatted_address,
+          "data",
+          data
         );
-        props.onChange({ geometry, formatted_address });
+        props.onChange({ geometry, formatted_address, description });
       }}
       getDefaultValue={() => ""}
       query={{

@@ -66,7 +66,49 @@ const BookTransport = props => {
     setRegion(region);
   };
 
-  const createTransportRequest = () => {};
+  const createTransportRequest = () => {
+    let errors = [];
+
+    if (!destination || !destination.geometry) {
+      errors.push("Pick a destination");
+    }
+    if (!capacity) {
+      errors.push("Enter a capacity");
+    }
+    if (!showStartDatePicker.date) {
+      errors.push("Select a departure start date");
+    }
+    if (!showEndDatePicker.date) {
+      errors.push("Select a departure end date");
+    }
+
+    if (errors.length > 0) {
+      let errorMessage = errors.join("\n");
+      alert(errorMessage);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("sourceLat", region.latitude);
+    formData.append("sourceLng", region.longitude);
+    formData.append("destLat", destination.geometry.lat);
+    formData.append("destLng", destination.geometry.lng);
+    formData.append("capacity", capacity);
+    formData.append(
+      "departureStart",
+      moment(showStartDatePicker.date).format("YYYY-MM-DD HH:mm:ss")
+    );
+    formData.append(
+      "departureEnd",
+      moment(showEndDatePicker.date).format("YYYY-MM-DD HH:mm:ss")
+    );
+
+    console.tron.log(formData);
+    axios
+      .post("/request")
+      .then(response => console.tron.log(response))
+      .catch(error => console.tron.log(error));
+  };
 
   return (
     <Block safe>
@@ -108,7 +150,7 @@ const BookTransport = props => {
           >
             <Block middle center>
               <Text primary bold h3 subtitle>
-                {destination.formatted_address || "PICK DESTINATION"}
+                {(destination && destination.description) || "PICK DESTINATION"}
               </Text>
             </Block>
           </Button>
@@ -127,7 +169,9 @@ const BookTransport = props => {
               />
             </Block>
             <Block flex={0} middle center marginLeft={10} marginRight={10}>
-              <Text subtitle gray>units</Text>
+              <Text subtitle gray>
+                units
+              </Text>
             </Block>
           </Block>
 
@@ -179,7 +223,13 @@ const BookTransport = props => {
             </Button>
           </Block>
 
-          <Button marginTop={10} primary>
+          <Button
+            onPress={() => {
+              createTransportRequest();
+            }}
+            marginTop={10}
+            primary
+          >
             <Block middle center>
               <Text white bold h3>
                 SCHEDULE
