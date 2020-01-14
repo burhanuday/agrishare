@@ -1,16 +1,36 @@
 import React, { useState } from "react";
-import { StyleSheet, SafeAreaView } from "react-native";
-import { Block, Text, Input, Button, Card } from "../../components/index";
+import { StyleSheet, AsyncStorage, ActivityIndicator } from "react-native";
+import {
+  Block,
+  Text,
+  Input,
+  Button,
+  Card,
+  COLORS
+} from "../../components/index";
 import axios from "../../axios/axios";
 
 const Auth = props => {
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const login = () => {
-    if (phone.length !== 10) {
-      console.tron.log("Check phone number length");
-    }
-  };
+  if (loading) {
+    return (
+      <Block white safe center space="between">
+        <Block row middle center flex={0}>
+          <Text size={44} black bold>
+            Truck
+          </Text>
+          <Text size={44} black light>
+            ily
+          </Text>
+        </Block>
+        <Block center middle>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        </Block>
+      </Block>
+    );
+  }
 
   return (
     <Block white safe space="between">
@@ -50,7 +70,26 @@ const Auth = props => {
       <Block flex={0} center paddingBottom={20}>
         <Button
           onPress={() => {
-            props.navigation.navigate("Authenticated");
+            if (phone.length !== 10) {
+              alert("Enter a valid phone number");
+              return;
+            }
+            setLoading(true);
+            const formData = new FormData();
+            formData.append("phone", phone);
+            //formData.append("name", "Burhanuddin M U");
+            axios
+              .post("/login", formData)
+              .then(async response => {
+                console.tron.log(response);
+                const data = response.data;
+                await AsyncStorage.setItem("_id", data.user._id);
+                await AsyncStorage.setItem("name", data.user.name);
+                await AsyncStorage.setItem("phone", data.user.phone);
+                setLoading(false);
+                props.navigation.navigate("Authenticated");
+              })
+              .catch(error => console.tron.log(error));
           }}
           style={styles.loginButton}
           primary

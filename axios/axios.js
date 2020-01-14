@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native";
 import NavigationService from "../NavigationService";
 
 const instance = axios.create({
-  baseURL: "https://truck-pool.herokuapp.com/"
+  baseURL: "https://truck-pool.herokuapp.com/api/"
 });
 
 /* 

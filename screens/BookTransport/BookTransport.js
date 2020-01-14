@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  AsyncStorage
 } from "react-native";
 import { Block, Text, Card, Input, Button } from "../../components/index";
 import MapView, { Marker } from "react-native-maps";
@@ -66,7 +67,7 @@ const BookTransport = props => {
     setRegion(region);
   };
 
-  const createTransportRequest = () => {
+  const createTransportRequest = async () => {
     let errors = [];
 
     if (!destination || !destination.geometry) {
@@ -88,6 +89,9 @@ const BookTransport = props => {
       return;
     }
 
+    const _id = await AsyncStorage.getItem("_id");
+    console.tron.log("userId", _id);
+
     const formData = new FormData();
     formData.append("sourceLat", region.latitude);
     formData.append("sourceLng", region.longitude);
@@ -105,7 +109,7 @@ const BookTransport = props => {
 
     console.tron.log(formData);
     axios
-      .post("/request")
+      .post(`/request?userId=${_id}`)
       .then(response => console.tron.log(response))
       .catch(error => console.tron.log(error));
   };
