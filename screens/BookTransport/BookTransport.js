@@ -24,8 +24,8 @@ const BookTransport = props => {
   const [loading, setLoading] = useState(false);
 
   const [region, setRegion] = useState({
-    latitude: 18.960546,
-    longitude: 72.8170935,
+    latitude: null,
+    longitude: null,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
   });
@@ -59,13 +59,16 @@ const BookTransport = props => {
   }, []);
   return (
     <Block safe>
-      <MapView
-        showsUserLocation={true}
-        showsCompass={true}
-        style={styles.map}
-        initialRegion={region}
-        onRegionChangeComplete={r => onRegionChange(r)}
-      />
+      {region.latitude && (
+        <MapView
+          showsUserLocation={true}
+          showsCompass={true}
+          style={styles.map}
+          initialRegion={region}
+          onRegionChangeComplete={r => onRegionChange(r)}
+        />
+      )}
+
       <Block style={styles.markerFixed}>
         <Image style={styles.marker} source={imageMarker} />
       </Block>
