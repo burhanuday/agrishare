@@ -40,6 +40,11 @@ const JoinRide = props => {
     if (!showEndDatePicker.date) {
       errors.push("Select a departure end date");
     }
+    if (
+      moment(showEndDatePicker.date).isBefore(moment(showStartDatePicker.date))
+    ) {
+      errors.push("End date cannot be before start date");
+    }
 
     if (errors.length > 0) {
       let errorMessage = errors.join("\n");
