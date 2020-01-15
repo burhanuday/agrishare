@@ -26,8 +26,10 @@ const BookTransport = props => {
   const [region, setRegion] = useState({
     latitude: null,
     longitude: null,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01
+    /* latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421 */
   });
   const getCurrentLocation = async () => {
     let location = await Location.getCurrentPositionAsync({});
