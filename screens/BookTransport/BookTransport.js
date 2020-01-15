@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
 });
 
 BookTransport.navigationOptions = {
-  title: "Book transport"
+  title: "Book Transport"
 };
 
 export default BookTransport;
