@@ -6,15 +6,20 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import axios from "../../../axios/axios";
 
+const todaysDate = new Date();
+const todaysDate2 = new Date();
+todaysDate.setDate(todaysDate.getDate() + 1);
+todaysDate2.setDate(todaysDate2.getDate() + 5);
+
 const JoinRide = props => {
   const [showStartDatePicker, setShowStartDatePicker] = useState({
     visible: false,
-    date: null
+    date: todaysDate
   });
 
   const [showEndDatePicker, setShowEndDatePicker] = useState({
     visible: false,
-    date: null
+    date: todaysDate2
   });
 
   const [destination, setDestination] = useState(null);
@@ -197,17 +202,22 @@ const JoinRide = props => {
         </Block>
       </Button>
 
+      {console.tron.log("this is date obj", new Date())}
+
       {showStartDatePicker.visible && (
         <DateTimePicker
-          value={new Date()}
+          value={showStartDatePicker.date}
+          minimumDate={todaysDate}
           mode="date"
           is24Hour={true}
           display="default"
           onChange={(event, date) => {
-            setShowStartDatePicker({
-              visible: false,
-              date: date
-            });
+            if (date) {
+              setShowStartDatePicker({
+                visible: false,
+                date: date
+              });
+            }
             console.tron.log(event, date);
           }}
         />
@@ -215,15 +225,18 @@ const JoinRide = props => {
 
       {showEndDatePicker.visible && (
         <DateTimePicker
-          value={new Date()}
+          value={showEndDatePicker.date}
+          minimumDate={todaysDate}
           mode="date"
           is24Hour={true}
           display="default"
           onChange={(event, date) => {
-            setShowEndDatePicker({
-              visible: false,
-              date: date
-            });
+            if (date) {
+              setShowEndDatePicker({
+                visible: false,
+                date: date
+              });
+            }
             console.tron.log(event, date);
           }}
         />
