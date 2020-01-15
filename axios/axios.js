@@ -4,6 +4,7 @@ import NavigationService from "../NavigationService";
 
 const instance = axios.create({
   baseURL: "https://truck-pool.herokuapp.com/api/"
+  //baseURL: "http://7a54652c.ngrok.io"
 });
 
 /* 
@@ -41,4 +42,4 @@ instance.interceptors.response.use(
 );
 */
 
-export default instance; 
+export default instance;
