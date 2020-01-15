@@ -103,6 +103,7 @@ const BookTransport = props => {
                       <Text
                         primary={mode ? true : false}
                         white={mode ? false : true}
+                        bold={mode ? false : true}
                       >
                         JOIN RIDE
                       </Text>
@@ -125,6 +126,7 @@ const BookTransport = props => {
                       <Text
                         primary={mode ? false : true}
                         white={mode ? true : false}
+                        bold={mode ? true : false}
                       >
                         CREATE RIDE
                       </Text>
