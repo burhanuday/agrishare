@@ -7,10 +7,13 @@ import moment from "moment";
 import axios from "../../../axios/axios";
 import Axios from "axios";
 
+const todaysDate = new Date();
+todaysDate.setDate(todaysDate.getDate() + 5);
+
 const CreateRide = props => {
   const [showDepartureDatePicker, setShowDepartureDatePicker] = useState({
     visible: false,
-    date: null
+    date: todaysDate
   });
 
   const [destination, setDestination] = useState(null);
@@ -176,15 +179,18 @@ const CreateRide = props => {
 
       {showDepartureDatePicker.visible && (
         <DateTimePicker
-          value={new Date()}
+          value={showDepartureDatePicker.date}
+          minimumDate={todaysDate}
           mode="date"
           is24Hour={true}
           display="default"
           onChange={(event, date) => {
-            setShowDepartureDatePicker({
-              visible: false,
-              date: date
-            });
+            if (date) {
+              setShowDepartureDatePicker({
+                visible: false,
+                date: date
+              });
+            }
             console.tron.log(event, date);
           }}
         />
