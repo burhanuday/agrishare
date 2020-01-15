@@ -39,12 +39,12 @@ const CreateRide = props => {
       `https://maps.googleapis.com/maps/api/directions/json?origin=${props.region.latitude},${props.region.longitude}&destination=${destination.geometry.lat},${destination.geometry.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
     )
       .then(async response => {
-        console.log(response.data.routes[0].overview_polyline.points);
+        console.tron.log(response.data.routes[0].overview_polyline.points);
         const polyline = response.data.routes[0].overview_polyline.points;
         props.setLoading(true);
 
         const _id = await AsyncStorage.getItem("_id");
-        console.log("userId", _id);
+        console.tron.log("userId", _id);
 
         const formData = new FormData();
         formData.append("sourceLat", props.region.latitude);
@@ -58,14 +58,14 @@ const CreateRide = props => {
         );
         formData.append("polyline", polyline);
 
-        console.log(formData);
+        console.tron.log(formData);
         axios
           .post(
             `/journey?userId=${_id}&vehicleId=5e1a8ba59017533b948be08c`,
             formData
           )
           .then(response => {
-            //console.log(response);
+            //console.tron.log(response);
             if (Number(response.data.error) === 0) {
               alert(response.data.message);
               props.navigation.pop();
@@ -74,12 +74,12 @@ const CreateRide = props => {
             }
           })
           .catch(error => {
-            console.log(error);
+            console.tron.log(error);
             alert("There was an error with the request");
           })
           .finally(() => props.setLoading(false));
       })
-      .catch(error => console.log(error));
+      .catch(error => console.tron.log(error));
   };
 
   return (

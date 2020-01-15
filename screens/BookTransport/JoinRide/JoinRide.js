@@ -45,7 +45,7 @@ const JoinRide = props => {
     props.setLoading(true);
 
     const _id = await AsyncStorage.getItem("_id");
-    console.log("userId", _id);
+    console.tron.log("userId", _id);
 
     const formData = new FormData();
     formData.append("sourceLat", props.region.latitude);
@@ -62,12 +62,12 @@ const JoinRide = props => {
       moment(showEndDatePicker.date).format("YYYY-MM-DD")
     );
 
-    console.log(formData);
+    console.tron.log(formData);
 
     axios
       .post(`/request?userId=${_id}`, formData)
       .then(response => {
-        //console.log(response);
+        //console.tron.log(response);
         if (Number(response.data.error) === 0) {
           alert(response.data.message);
           props.navigation.pop();
@@ -76,7 +76,7 @@ const JoinRide = props => {
         }
       })
       .catch(error => {
-        console.log(error);
+        console.tron.log(error);
         alert("There was an error with the request");
       })
       .finally(() => props.setLoading(false));

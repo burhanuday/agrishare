@@ -38,7 +38,7 @@ const BookTransport = props => {
 
   const getLocationPermissions = async () => {
     const { status } = await Permissions.getAsync(Permissions.LOCATION);
-    console.log("status", status);
+    console.tron.log("status", status);
     if (status !== "granted") {
       const response = await Permissions.askAsync(Permissions.LOCATION);
     }
@@ -49,7 +49,7 @@ const BookTransport = props => {
 
   useEffect(() => {
     getLocationPermissions().then(response => {
-      console.log("done");
+      console.tron.log("done");
     });
     getCurrentLocation().then(location => {
       setRegion({
@@ -87,10 +87,15 @@ const BookTransport = props => {
             </Block>
           ) : (
             <React.Fragment>
-              <Block row>
+              <Block row paddingLeft={20} paddingRight={20}>
                 <Block flex={1}>
                   <Button
-                    style={{ borderRadius: 0, height: 35 }}
+                    style={{
+                      borderRadius: 0,
+                      borderTopLeftRadius: 12,
+                      borderBottomLeftRadius: 12,
+                      height: 35
+                    }}
                     outlined={mode ? true : false}
                     onPress={() => setMode(0)}
                   >
@@ -107,7 +112,12 @@ const BookTransport = props => {
 
                 <Block flex={1}>
                   <Button
-                    style={{ borderRadius: 0, height: 35 }}
+                    style={{
+                      borderRadius: 0,
+                      height: 35,
+                      borderTopRightRadius: 12,
+                      borderBottomRightRadius: 12
+                    }}
                     outlined={mode ? false : true}
                     onPress={() => setMode(1)}
                   >
