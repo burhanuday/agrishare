@@ -21,13 +21,13 @@ const TransportListRow = props => {
       const responseStart = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${start.lat},${start.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
       );
-      const startAddress = responseStart.data.results[3].formatted_address;
+      const startAddress = responseStart.data.results[2].formatted_address;
       //console.tron.log("result", startAddress.formatted_address);
 
       const responseEnd = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end.lat},${end.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
       );
-      const endAddress = responseEnd.data.results[3].formatted_address;
+      const endAddress = responseEnd.data.results[2].formatted_address;
       //console.tron.log("result", endAddress.formatted_address);
 
       setStartAddress({ address: startAddress, geometry: start });
@@ -58,19 +58,21 @@ const TransportListRow = props => {
 
   return (
     <Card margin={5} outlined>
-      <Block padding={5} row space="between">
+      <Block style={styles.container} padding={5}>
         <Block paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
             SOURCE
           </Text>
           <Text>{startAddress.address}</Text>
         </Block>
-        <Block center middle flex={0}>
+        <Block center middle flex={0} paddingTop={10} paddingBottom={10} row>
+          <Block style={styles.divider} />
           <MaterialCommunityIcons
             name="truck-delivery"
             color={COLORS.primary}
             size={30}
           />
+          <Block style={styles.divider} />
         </Block>
         <Block paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
@@ -79,8 +81,7 @@ const TransportListRow = props => {
           <Text>{endAddress.address}</Text>
         </Block>
       </Block>
-      <Block style={styles.divider} />
-      <Block middle row right>
+      <Block middle row right marginTop={10}>
         <Button onPress={handleSeeRoutePressed} outlined style={styles.button}>
           <Block middle center row>
             <Text subtitle primary>
@@ -110,6 +111,9 @@ const styles = StyleSheet.create({
   button: {
     width: 120,
     height: 30
+  },
+  container: {
+    justifyContent: "space-between"
   }
 });
 
