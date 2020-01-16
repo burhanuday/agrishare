@@ -42,6 +42,7 @@ const TruckInfoModal = props => {
             <Block flex={2}>
               <Input
                 marginTop={10}
+                autoCapitalize="characters"
                 onChangeText={val => props.setLicensePlate(val)}
                 value={props.licensePlate}
                 placeholder="Enter license plate"
@@ -59,6 +60,7 @@ const TruckInfoModal = props => {
             <Block flex={2}>
               <Input
                 marginTop={10}
+                autoCapitalize="characters"
                 onChangeText={val => props.setTruckMake(val)}
                 value={props.truckMake}
                 placeholder="Enter Truck Make"
