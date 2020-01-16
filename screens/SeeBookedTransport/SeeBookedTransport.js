@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, FlatList, Platform } from "react-native";
 import { Block, Text } from "../../components/index";
 import axios from "../../axios/axios";
+import TransportListRow from "./TransportListRow";
 
 const SeeBookedTransport = props => {
   const [requests, setRequests] = useState([]);
@@ -26,7 +27,11 @@ const SeeBookedTransport = props => {
 
   return (
     <Block safe>
-      <Text>booked transport screen</Text>
+      <FlatList
+        data={requests}
+        renderItem={request => <TransportListRow request={request} />}
+        keyExtractor={item => item._id}
+      />
     </Block>
   );
 };
