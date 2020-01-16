@@ -101,7 +101,7 @@ const TransportListRow = props => {
     //console.tron.log("way string", waypointsString);
 
     Linking.openURL(
-      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=optimize:true|${waypointsString}`
+      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=${waypointsString}`
     );
   };
 
