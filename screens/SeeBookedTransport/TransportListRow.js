@@ -17,21 +17,25 @@ const TransportListRow = props => {
     const end = journey.end;
     const waypoints = journey.waypoints;
 
-    const responseStart = await Axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${start.lat},${start.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
-    );
-    const startAddress = responseStart.data.results[4].formatted_address;
-    //console.tron.log("result", startAddress.formatted_address);
+    try {
+      const responseStart = await Axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${start.lat},${start.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
+      );
+      const startAddress = responseStart.data.results[3].formatted_address;
+      //console.tron.log("result", startAddress.formatted_address);
 
-    const responseEnd = await Axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end.lat},${end.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
-    );
-    const endAddress = responseEnd.data.results[4].formatted_address;
-    //console.tron.log("result", endAddress.formatted_address);
+      const responseEnd = await Axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end.lat},${end.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
+      );
+      const endAddress = responseEnd.data.results[3].formatted_address;
+      //console.tron.log("result", endAddress.formatted_address);
 
-    setStartAddress({ address: startAddress, geometry: start });
-    setEndAddress({ address: endAddress, geometry: end });
-    setWaypoints(waypoints);
+      setStartAddress({ address: startAddress, geometry: start });
+      setEndAddress({ address: endAddress, geometry: end });
+      setWaypoints(waypoints);
+    } catch (error) {
+      alert("There was an error with the request");
+    }
     return "done";
   };
 
@@ -63,7 +67,7 @@ const TransportListRow = props => {
         </Block>
         <Block center middle flex={0}>
           <MaterialCommunityIcons
-            name="chevron-right"
+            name="truck-delivery"
             color={COLORS.primary}
             size={30}
           />
