@@ -11,6 +11,7 @@ const TruckInfoModal = props => {
           <Block flex={0} marginBottom={30}>
             <Text size={28}>Truck information</Text>
           </Block>
+
           <Block flex={0} row center middle>
             <Block center marginRight={10}>
               <Text>Truck capacity:</Text>

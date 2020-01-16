@@ -25,13 +25,13 @@ const TransportListRow = props => {
       const responseStart = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${start.lat},${start.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
       );
-      const startAddress = responseStart.data.results[2].formatted_address;
+      const startAddress = responseStart.data.results[0].formatted_address;
       //console.tron.log("result", startAddress.formatted_address);
 
       const responseEnd = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end.lat},${end.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
       );
-      const endAddress = responseEnd.data.results[2].formatted_address;
+      const endAddress = responseEnd.data.results[0].formatted_address;
       //console.tron.log("result", endAddress.formatted_address);
 
       setStartAddress({ address: startAddress, geometry: start });
@@ -65,24 +65,35 @@ const TransportListRow = props => {
   return (
     <Card margin={5} outlined>
       <Block style={styles.container} padding={5}>
-        <Block row>
+        <Block row marginBottom={10}>
           <Block paddingLeft={5} paddingRight={5} flex={1}>
             <Text primary small>
-              DRIVER NAME
+              NAME
             </Text>
             <Text>{driver.name}</Text>
           </Block>
+
           <Block paddingLeft={5} paddingRight={5} flex={1}>
             <Text primary small>
-              DRIVER PHONE
+              PHONE
             </Text>
             <Text>{driver.phone}</Text>
           </Block>
+        </Block>
+
+        <Block row marginBottom={10}>
           <Block paddingLeft={5} paddingRight={5} flex={1}>
             <Text primary small>
-              TRUCK TYPE
+              MODEL
             </Text>
-            <Text>{vehicle.type}</Text>
+            <Text>{vehicle.model}</Text>
+          </Block>
+
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              PLATE
+            </Text>
+            <Text>{vehicle.license_plate}</Text>
           </Block>
         </Block>
 
@@ -112,6 +123,25 @@ const TransportListRow = props => {
       </Block>
 
       <Block middle row right marginTop={10}>
+        <Button
+          marginRight={10}
+          onPress={() => {
+            Linking.openURL(`tel:${driver.phone}`);
+          }}
+          outlined
+          style={styles.button}
+        >
+          <Block middle center row>
+            <MaterialCommunityIcons
+              name="phone"
+              color={COLORS.primary}
+              size={20}
+            />
+            <Text subtitle primary>
+              CALL DRIVER
+            </Text>
+          </Block>
+        </Button>
         <Button onPress={handleSeeRoutePressed} outlined style={styles.button}>
           <Block middle center row>
             <Text subtitle primary>
