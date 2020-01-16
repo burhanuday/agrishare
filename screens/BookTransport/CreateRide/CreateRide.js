@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, StyleSheet } from "react-native";
 import { Block, Text, Input, Button, COLORS } from "../../../components/index";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import TruckInfoModal from "./TruckInfoModal";
 
 import moment from "moment";
 import axios from "../../../axios/axios";
@@ -18,6 +20,9 @@ const CreateRide = props => {
 
   const [destination, setDestination] = useState(null);
   const [capacity, setCapacity] = useState(null);
+  const [licensePlate, setLicensePlate] = useState("");
+  const [truckMake, setTruckMake] = useState("");
+  const [showTruckInfoModal, setShowTruckInfoModal] = useState(false);
 
   const createTransportRequest = async () => {
     let errors = [];
@@ -30,6 +35,12 @@ const CreateRide = props => {
     }
     if (!showDepartureDatePicker.date) {
       errors.push("Select a departure start date");
+    }
+    if (!licensePlate) {
+      errors.push("Enter license plate number in truck info");
+    }
+    if (!truckMake) {
+      errors.push("Enter truck make in truck info");
     }
 
     if (errors.length > 0) {
@@ -54,6 +65,8 @@ const CreateRide = props => {
         formData.append("sourceLng", props.region.longitude);
         formData.append("destLat", destination.geometry.lat);
         formData.append("destLng", destination.geometry.lng);
+        formData.append("vehicleModel", truckMake);
+        formData.append("vehicleLicensePlate", licensePlate);
         formData.append("capacityAvailable", Number(capacity));
         formData.append(
           "departure",
@@ -82,7 +95,10 @@ const CreateRide = props => {
           })
           .finally(() => props.setLoading(false));
       })
-      .catch(error => console.tron.log(error));
+      .catch(error => {
+        console.tron.log(error);
+        alert("Unknown error occured")
+      });
   };
 
   return (
@@ -109,27 +125,23 @@ const CreateRide = props => {
         </Block>
       </Button>
 
-      <Block row>
-        <Block center middle flex={0} marginRight={10}>
-          <Text>Truck capacity:</Text>
-        </Block>
-        <Block>
-          <Input
-            marginTop={10}
-            onChangeText={val => setCapacity(val)}
-            value={capacity}
-            placeholder="Enter capacity"
-            keyboardType="number-pad"
-            style={{
-              height: 30
-            }}
-          />
-        </Block>
-        <Block flex={0} middle center marginLeft={10} marginRight={10}>
-          <Text subtitle gray>
-            units
-          </Text>
-        </Block>
+      <Block>
+        <Button
+          onPress={() => setShowTruckInfoModal(true)}
+          style={styles.truckInfoButton}
+          outlined
+        >
+          <Block row center middle>
+            <MaterialCommunityIcons
+              name="truck"
+              color={COLORS.primary}
+              size={30}
+            />
+            <Text primary bold subtitle>
+              EDIT TRUCK INFO
+            </Text>
+          </Block>
+        </Button>
       </Block>
 
       <Block row>
@@ -195,8 +207,29 @@ const CreateRide = props => {
           }}
         />
       )}
+
+      {showTruckInfoModal && (
+        <TruckInfoModal
+          visible={showTruckInfoModal}
+          setShowTruckInfoModal={setShowTruckInfoModal}
+          capacity={capacity}
+          setCapacity={setCapacity}
+          licensePlate={licensePlate}
+          setLicensePlate={setLicensePlate}
+          truckMake={truckMake}
+          setTruckMake={setTruckMake}
+        />
+      )}
     </React.Fragment>
   );
 };
+
+const styles = StyleSheet.create({
+  truckInfoButton: {
+    height: 30,
+    width: 160,
+    marginTop: 10
+  }
+});
 
 export default CreateRide;

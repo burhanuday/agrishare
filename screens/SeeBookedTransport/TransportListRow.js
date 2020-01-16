@@ -8,14 +8,18 @@ const TransportListRow = props => {
   const [startAddress, setStartAddress] = useState("");
   const [endAddress, setEndAddress] = useState("");
   const [waypoints, setWaypoints] = useState([]);
+  const [driver, setDriver] = useState({});
+  const [vehicle, setVehicle] = useState({});
 
   const fetchData = async () => {
-    //console.tron.log("req", props.request);
+    console.tron.log("req", props.request);
     const journey = props.request.item.journeyId;
     //console.tron.log("jour", journey);
     const start = journey.start;
     const end = journey.end;
     const waypoints = journey.waypoints;
+    const driver = journey.posted_by;
+    const vehicle = journey.vehicle;
 
     try {
       const responseStart = await Axios.get(
@@ -33,6 +37,8 @@ const TransportListRow = props => {
       setStartAddress({ address: startAddress, geometry: start });
       setEndAddress({ address: endAddress, geometry: end });
       setWaypoints(waypoints);
+      setDriver(driver);
+      setVehicle(vehicle);
     } catch (error) {
       alert("There was an error with the request");
     }
@@ -59,12 +65,34 @@ const TransportListRow = props => {
   return (
     <Card margin={5} outlined>
       <Block style={styles.container} padding={5}>
+        <Block row>
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              DRIVER NAME
+            </Text>
+            <Text>{driver.name}</Text>
+          </Block>
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              DRIVER PHONE
+            </Text>
+            <Text>{driver.phone}</Text>
+          </Block>
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              TRUCK TYPE
+            </Text>
+            <Text>{vehicle.type}</Text>
+          </Block>
+        </Block>
+
         <Block paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
             SOURCE
           </Text>
           <Text>{startAddress.address}</Text>
         </Block>
+
         <Block center middle flex={0} paddingTop={10} paddingBottom={10} row>
           <Block style={styles.divider} />
           <MaterialCommunityIcons
@@ -74,6 +102,7 @@ const TransportListRow = props => {
           />
           <Block style={styles.divider} />
         </Block>
+
         <Block paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
             DESTINATION
@@ -81,6 +110,7 @@ const TransportListRow = props => {
           <Text>{endAddress.address}</Text>
         </Block>
       </Block>
+
       <Block middle row right marginTop={10}>
         <Button onPress={handleSeeRoutePressed} outlined style={styles.button}>
           <Block middle center row>
