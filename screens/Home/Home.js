@@ -22,7 +22,7 @@ const Home = props => {
           </Text>
         </Block>
 
-        <Block center>
+        <Block flex={0}>
           <TouchableWithoutFeedback
             onPress={() => {
               setLocale(locale === "en" ? "hi" : "en");
@@ -30,6 +30,27 @@ const Home = props => {
           >
             <Block flex={0} marginRight={10} marginTop={10}>
               <MaterialIcons name="language" color="black" size={30} />
+            </Block>
+          </TouchableWithoutFeedback>
+        </Block>
+
+        <Block flex={0}>
+          <TouchableWithoutFeedback
+            onPress={async () => {
+              try {
+                await AsyncStorage.multiRemove(["_id", "name", "phone"]);
+              } catch (e) {
+                console.tron.log("error removing logout keys", e);
+              }
+              props.navigation.navigate("Unauthenticated");
+            }}
+          >
+            <Block marginRight={10} marginTop={10}>
+              <MaterialCommunityIcons
+                name="logout-variant"
+                color="black"
+                size={30}
+              />
             </Block>
           </TouchableWithoutFeedback>
         </Block>
@@ -73,29 +94,7 @@ const Home = props => {
 
 Home.navigationOptions = ({ navigation }) => {
   return {
-    title: "",
-    headerRight: () => (
-      <Block row>
-        <TouchableWithoutFeedback
-          onPress={async () => {
-            try {
-              await AsyncStorage.multiRemove(["_id", "name", "phone"]);
-            } catch (e) {
-              console.tron.log("error removing logout keys", e);
-            }
-            navigation.navigate("Unauthenticated");
-          }}
-        >
-          <Block marginRight={10} marginTop={10}>
-            <MaterialCommunityIcons
-              name="logout-variant"
-              color="black"
-              size={30}
-            />
-          </Block>
-        </TouchableWithoutFeedback>
-      </Block>
-    )
+    title: ""
   };
 };
 
