@@ -184,7 +184,12 @@ const JourneyListRow = props => {
               TOTAL COST
             </Text>
             <Text>
-              ₹{Number(getKmsFromMNumber(duration.totalDistance)) * 14}
+              ₹
+              {
+                String(
+                  Number(getKmsFromMNumber(duration.totalDistance)) * 14
+                ).split(".")[0]
+              }
             </Text>
           </Block>
         </Block>
