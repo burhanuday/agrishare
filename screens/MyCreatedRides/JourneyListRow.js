@@ -15,6 +15,7 @@ const JourneyListRow = props => {
     totalDistance: 0,
     totalDuration: 0
   });
+  const [acceptedRequests, setAcceptedRequests] = useState([]);
 
   const getDuration = async (startAddress, endAddress, waypoints) => {
     const waypointsString = waypoints.reduce((total, current) => {
@@ -56,6 +57,7 @@ const JourneyListRow = props => {
     const waypoints = journey.waypoints;
     const vehicle = journey.vehicle;
     const departure = journey.departure;
+    const acceptedRequests = journey.accepted_requests;
 
     try {
       const responseStart = await Axios.get(
@@ -83,6 +85,7 @@ const JourneyListRow = props => {
       setVehicle(vehicle);
       setDeparture(departure);
       setDuration(duration);
+      setAcceptedRequests(acceptedRequests);
     } catch (error) {
       console.tron.log("error", error);
 
@@ -100,7 +103,7 @@ const JourneyListRow = props => {
     //console.tron.log("way string", waypointsString);
 
     Linking.openURL(
-      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=${waypointsString}`
+      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=${waypointsString}&travelmode=driving`
     );
   };
 
@@ -120,6 +123,13 @@ const JourneyListRow = props => {
     distance = String(distance);
     distance = distance.substring(0, 5);
     return distance + " kms";
+  };
+
+  const getKmsFromMNumber = meters => {
+    let distance = meters / 1000;
+    distance = String(distance);
+    distance = distance.substring(0, 5);
+    return distance;
   };
 
   return (
@@ -168,6 +178,17 @@ const JourneyListRow = props => {
           </Block>
         </Block>
 
+        <Block row marginBottom={10}>
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              TOTAL COST
+            </Text>
+            <Text>
+              ₹{Number(getKmsFromMNumber(duration.totalDistance)) * 14}
+            </Text>
+          </Block>
+        </Block>
+
         <Block paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
             SOURCE
@@ -185,11 +206,54 @@ const JourneyListRow = props => {
           <Block style={styles.divider} />
         </Block>
 
-        <Block paddingLeft={5} paddingRight={5} flex={1}>
+        <Block marginBottom={10} paddingLeft={5} paddingRight={5} flex={1}>
           <Text primary small>
             DESTINATION
           </Text>
           <Text>{endAddress.address}</Text>
+        </Block>
+
+        <Block marginTop={10} paddingLeft={5} paddingRight={5} flex={1}>
+          <Text primary small>
+            POOLERS
+          </Text>
+          {acceptedRequests.map(request => (
+            <Card key={request._id} marginTop={7} outlined>
+              <Block row middle center>
+                {console.tron.log("person data", request)}
+                <Block>
+                  <Block>
+                    <Text black bold size={18}>
+                      {request.requestId.userId.name}
+                    </Text>
+                  </Block>
+                  <Block>
+                    <Text gray>Capacity: {request.capacityRequired}</Text>
+                  </Block>
+                </Block>
+                <Block center>
+                  <Button
+                    onPress={() => {
+                      Linking.openURL(`tel:${request.requestId.userId.phone}`);
+                    }}
+                    outlined
+                    style={styles.callButton}
+                  >
+                    <Block middle center row>
+                      <MaterialCommunityIcons
+                        name="phone"
+                        color={COLORS.primary}
+                        size={20}
+                      />
+                      <Text subtitle primary>
+                        CALL PHONE
+                      </Text>
+                    </Block>
+                  </Button>
+                </Block>
+              </Block>
+            </Card>
+          ))}
         </Block>
       </Block>
 
@@ -221,6 +285,10 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   button: {
+    width: 120,
+    height: 30
+  },
+  callButton: {
     width: 120,
     height: 30
   },

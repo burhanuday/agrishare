@@ -49,6 +49,11 @@ const TransportListRow = props => {
   const fetchData = async () => {
     console.tron.log("req", props.request);
     const journey = props.request.item.journeyId;
+    const isJourney = props.request.item.isJourney
+
+    if(!isJourney){
+      return;
+    }
     //console.tron.log("jour", journey);
     const start = journey.start;
     const end = journey.end;
@@ -101,7 +106,7 @@ const TransportListRow = props => {
     //console.tron.log("way string", waypointsString);
 
     Linking.openURL(
-      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=${waypointsString}`
+      `https://www.google.com/maps/dir/?api=1&origin=${startAddress.geometry.lat},${startAddress.geometry.lng}&destination=${endAddress.geometry.lat},${endAddress.geometry.lng}&waypoints=${waypointsString}&travelmode=driving`
     );
   };
 

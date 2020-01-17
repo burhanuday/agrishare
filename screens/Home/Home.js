@@ -31,7 +31,7 @@ const Home = props => {
           />
         </Block>
         <Block marginTop={10} row flex={0.2}>
-          <Block row flex={0.85}>
+          <Block row flex={0.83}>
             <NavigationItem
               icon="google-maps"
               title="My Created Rides"
