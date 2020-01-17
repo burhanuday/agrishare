@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Switch } from "react-native";
 import Modal from "react-native-modal";
 import { Block, Text, Input, Button } from "../../../components";
 
@@ -7,7 +7,7 @@ const TruckInfoModal = props => {
   return (
     <Block flex={0}>
       <Modal isVisible={props.visible}>
-        <Block white marginTop={60} marginBottom={100} padding={30} radius={15}>
+        <Block white marginTop={60} marginBottom={0} padding={30} radius={15}>
           <Block flex={0} marginBottom={30}>
             <Text size={28}>Truck information</Text>
           </Block>
@@ -69,6 +69,24 @@ const TruckInfoModal = props => {
                 }}
               />
             </Block>
+          </Block>
+
+          <Block flex={0} marginTop={10} row space="around">
+            <Block>
+              <Text>Is this a refrigerated truck?</Text>
+            </Block>
+            <Switch
+              value={props.isPerishable}
+              onValueChange={val => props.setIsPerishable(val)}
+            />
+          </Block>
+
+          <Block flex={0} center middle marginTop={10} row space="around">
+            <Text>Can this truck handle fragile?</Text>
+            <Switch
+              value={props.isFragile}
+              onValueChange={val => props.setIsFragile(val)}
+            />
           </Block>
 
           <Block right style={styles.okayButtonStyle}>

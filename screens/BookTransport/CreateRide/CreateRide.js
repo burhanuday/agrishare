@@ -23,6 +23,8 @@ const CreateRide = props => {
   const [licensePlate, setLicensePlate] = useState("");
   const [truckMake, setTruckMake] = useState("");
   const [showTruckInfoModal, setShowTruckInfoModal] = useState(false);
+  const [isPerishable, setIsPerishable] = useState(false);
+  const [isFragile, setIsFragile] = useState(false);
 
   const createTransportRequest = async () => {
     let errors = [];
@@ -68,6 +70,8 @@ const CreateRide = props => {
         formData.append("vehicleModel", truckMake);
         formData.append("vehicleLicensePlate", licensePlate);
         formData.append("capacityAvailable", Number(capacity));
+        formData.append("isPerishable", isPerishable);
+        formData.append("isFragile", isFragile);
         formData.append(
           "departure",
           moment(showDepartureDatePicker.date).format("YYYY-MM-DD")
@@ -97,7 +101,7 @@ const CreateRide = props => {
       })
       .catch(error => {
         console.tron.log(error);
-        alert("Unknown error occured")
+        alert("Unknown error occured");
       });
   };
 
@@ -192,7 +196,7 @@ const CreateRide = props => {
       {showDepartureDatePicker.visible && (
         <DateTimePicker
           value={showDepartureDatePicker.date}
-          minimumDate={todaysDate}
+          //minimumDate={todaysDate}
           mode="date"
           is24Hour={true}
           display="default"
@@ -218,6 +222,10 @@ const CreateRide = props => {
           setLicensePlate={setLicensePlate}
           truckMake={truckMake}
           setTruckMake={setTruckMake}
+          isFragile={isFragile}
+          setIsFragile={setIsFragile}
+          isPerishable={isPerishable}
+          setIsPerishable={setIsPerishable}
         />
       )}
     </React.Fragment>

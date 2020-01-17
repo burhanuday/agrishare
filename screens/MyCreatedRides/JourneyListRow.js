@@ -192,6 +192,20 @@ const JourneyListRow = props => {
               }
             </Text>
           </Block>
+
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              PERISHABLE GOODS
+            </Text>
+            <Text>{props.journey.item.isPerishable ? "YES" : "NO"}</Text>
+          </Block>
+
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              FRAGILE GOODS
+            </Text>
+            <Text>{props.journey.item.isFragile ? "YES" : "NO"}</Text>
+          </Block>
         </Block>
 
         <Block paddingLeft={5} paddingRight={5} flex={1}>

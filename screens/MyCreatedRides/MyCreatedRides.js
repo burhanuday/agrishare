@@ -14,7 +14,7 @@ const MyCreatedRides = props => {
       const _id = await AsyncStorage.getItem("_id");
       //console.tron.log("_id", _id);
       const response = await axios.get(`/journeys?userId=${_id}`);
-      console.tron.log(response.data);
+      console.log("response from api", response.data);
       if (Number(response.data.error) === 0) {
         const journeys = response.data.journeys;
         setJourneys(journeys);

@@ -12,6 +12,9 @@ if (__DEV__) {
 }
 
 export default function App() {
+  const setLocale = locale => {
+    //setState({ locale });
+  };
   return (
     <Provider store={store}>
       <AppContainer

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Switch } from "react-native";
 import { Block, Text, Input, Button, COLORS } from "../../../components/index";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
@@ -24,6 +24,8 @@ const JoinRide = props => {
 
   const [destination, setDestination] = useState(null);
   const [capacity, setCapacity] = useState(null);
+  const [isPerishable, setIsPerishable] = useState(false);
+  const [isFragile, setIsFragile] = useState(false);
 
   const createTransportRequest = async () => {
     let errors = [];
@@ -63,14 +65,26 @@ const JoinRide = props => {
     formData.append("destLat", destination.geometry.lat);
     formData.append("destLng", destination.geometry.lng);
     formData.append("capacity", Number(capacity));
-    formData.append(
-      "departureStart",
-      moment(showStartDatePicker.date).format("YYYY-MM-DD")
-    );
-    formData.append(
-      "departureEnd",
-      moment(showEndDatePicker.date).format("YYYY-MM-DD")
-    );
+    formData.append("isPerishable", isPerishable);
+    formData.append("isFragile", isFragile);
+    if (isPerishable) {
+      formData.append("departureStart", moment().format("YYYY-MM-DD"));
+      formData.append(
+        "departureEnd",
+        moment()
+          .add("2", "day")
+          .format("YYYY-MM-DD")
+      );
+    } else {
+      formData.append(
+        "departureStart",
+        moment(showStartDatePicker.date).format("YYYY-MM-DD")
+      );
+      formData.append(
+        "departureEnd",
+        moment(showEndDatePicker.date).format("YYYY-MM-DD")
+      );
+    }
 
     console.tron.log(formData);
 
@@ -139,59 +153,82 @@ const JoinRide = props => {
         </Block>
       </Block>
 
-      <Block row>
-        <Button
-          flex={1}
-          marginRight={5}
-          onPress={() => {
-            setShowStartDatePicker({
-              ...showStartDatePicker,
-              visible: true
-            });
-          }}
-          marginTop={10}
-          style={{
-            height: 35
-          }}
-          primary
-          outlined
-        >
-          <Block middle center>
-            <Text primary bold h3 subtitle>
-              {moment(showStartDatePicker.date).format("DD-MM-YYYY") ===
-              "Invalid date"
-                ? "CHOOSE START"
-                : moment(showStartDatePicker.date).format("DD-MM-YYYY")}
-            </Text>
-          </Block>
-        </Button>
-
-        <Button
-          flex={1}
-          marginLeft={5}
-          onPress={() => {
-            setShowEndDatePicker({
-              ...showEndDatePicker,
-              visible: true
-            });
-          }}
-          marginTop={10}
-          primary
-          style={{
-            height: 35
-          }}
-          outlined
-        >
-          <Block middle center>
-            <Text primary bold h3 subtitle>
-              {moment(showEndDatePicker.date).format("DD-MM-YYYY") ===
-              "Invalid date"
-                ? "CHOOSE END"
-                : moment(showEndDatePicker.date).format("DD-MM-YYYY")}
-            </Text>
-          </Block>
-        </Button>
+      <Block marginTop={10} row space="around">
+        <Text>Are your goods perishable?</Text>
+        <Switch
+          value={isPerishable}
+          onValueChange={val => setIsPerishable(val)}
+        />
       </Block>
+
+      <Block marginTop={10} row space="around">
+        <Text>Are your goods fragile?</Text>
+        <Switch value={isFragile} onValueChange={val => setIsFragile(val)} />
+      </Block>
+
+      {!isPerishable && (
+        <Block row>
+          <Button
+            flex={1}
+            marginRight={5}
+            onPress={() => {
+              setShowStartDatePicker({
+                ...showStartDatePicker,
+                visible: true
+              });
+            }}
+            marginTop={10}
+            style={{
+              height: 35
+            }}
+            primary
+            outlined
+          >
+            <Block middle center>
+              <Text primary bold h3 subtitle>
+                {moment(showStartDatePicker.date).format("DD-MM-YYYY") ===
+                "Invalid date"
+                  ? "CHOOSE START"
+                  : moment(showStartDatePicker.date).format("DD-MM-YYYY")}
+              </Text>
+            </Block>
+          </Button>
+
+          <Button
+            flex={1}
+            marginLeft={5}
+            onPress={() => {
+              setShowEndDatePicker({
+                ...showEndDatePicker,
+                visible: true
+              });
+            }}
+            marginTop={10}
+            primary
+            style={{
+              height: 35
+            }}
+            outlined
+          >
+            <Block middle center>
+              <Text primary bold h3 subtitle>
+                {moment(showEndDatePicker.date).format("DD-MM-YYYY") ===
+                "Invalid date"
+                  ? "CHOOSE END"
+                  : moment(showEndDatePicker.date).format("DD-MM-YYYY")}
+              </Text>
+            </Block>
+          </Button>
+        </Block>
+      )}
+
+      {isPerishable && (
+        <Block center middle>
+          <Text subtitle primary>
+            Your journey will be scheduled for tomorrow
+          </Text>
+        </Block>
+      )}
 
       <Button
         onPress={() => {

@@ -17,6 +17,7 @@ const TransportListRow = props => {
     totalDuration: 0
   });
   const [isJourney, setIsJourney] = useState(false);
+  const [journey, setJourney] = useState(null);
 
   const getDuration = async (startAddress, endAddress, waypoints) => {
     const waypointsString = waypoints.reduce((total, current) => {
@@ -91,6 +92,7 @@ const TransportListRow = props => {
       setDeparture(departure);
       setDuration(duration);
       setIsJourney(true);
+      setJourney(journey);
     } catch (error) {
       console.tron.log("error", error);
 
@@ -193,6 +195,23 @@ const TransportListRow = props => {
               DURATION
             </Text>
             <Text>{getHoursFromSeconds(duration.totalDuration)}</Text>
+          </Block>
+        </Block>
+
+        <Block row marginTop={10} marginBottom={10}>
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              PERISHABLE GOODS
+            </Text>
+            {console.log("props in list", journey)}
+            <Text>{journey && journey.isPerishable ? "YES" : "NO"}</Text>
+          </Block>
+
+          <Block paddingLeft={5} paddingRight={5} flex={1}>
+            <Text primary small>
+              FRAGILE GOODS
+            </Text>
+            <Text>{journey && journey.isFragile ? "YES" : "NO"}</Text>
           </Block>
         </Block>
 
