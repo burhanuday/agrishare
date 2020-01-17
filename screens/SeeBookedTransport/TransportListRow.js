@@ -16,6 +16,7 @@ const TransportListRow = props => {
     totalDistance: 0,
     totalDuration: 0
   });
+  const [isJourney, setIsJourney] = useState(false);
 
   const getDuration = async (startAddress, endAddress, waypoints) => {
     const waypointsString = waypoints.reduce((total, current) => {
@@ -49,9 +50,9 @@ const TransportListRow = props => {
   const fetchData = async () => {
     console.tron.log("req", props.request);
     const journey = props.request.item.journeyId;
-    const isJourney = props.request.item.isJourney
+    const isJourney = props.request.item.isJourney;
 
-    if(!isJourney){
+    if (!isJourney) {
       return;
     }
     //console.tron.log("jour", journey);
@@ -89,6 +90,7 @@ const TransportListRow = props => {
       setVehicle(vehicle);
       setDeparture(departure);
       setDuration(duration);
+      setIsJourney(true);
     } catch (error) {
       console.tron.log("error", error);
 
@@ -127,6 +129,10 @@ const TransportListRow = props => {
     distance = distance.substring(0, 5);
     return distance + " kms";
   };
+
+  if (!isJourney) {
+    return null;
+  }
 
   return (
     <Card margin={5} outlined>
