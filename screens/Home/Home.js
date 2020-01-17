@@ -33,7 +33,7 @@ const Home = props => {
         <Block marginTop={10} row flex={0.2}>
           <Block row flex={0.83}>
             <NavigationItem
-              icon="google-maps"
+              icon="steering"
               title="My Created Rides"
               onPress={() => {
                 props.navigation.push("MyCreatedRides");
