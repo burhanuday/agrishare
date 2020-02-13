@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { AsyncStorage, Switch } from "react-native";
+import { AsyncStorage, Switch, Picker } from "react-native";
 import { Block, Text, Input, Button, COLORS } from "../../../components/index";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { products } from "../DestinationPicker/data";
 
 import moment from "moment";
 import axios from "../../../axios/axios";
@@ -26,6 +27,7 @@ const JoinRide = props => {
   const [capacity, setCapacity] = useState(null);
   const [isPerishable, setIsPerishable] = useState(false);
   const [isFragile, setIsFragile] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState("");
 
   const createTransportRequest = async () => {
     let errors = [];
@@ -108,27 +110,49 @@ const JoinRide = props => {
 
   return (
     <React.Fragment>
-      <Button
-        flex={1}
-        marginRight={5}
-        onPress={() => {
-          props.navigation.push("DestinationPicker", {
-            setDestination: geometry => {
-              setDestination(geometry);
-              props.navigation.pop();
-            }
-          });
-        }}
-        marginTop={10}
-        primary
-        outlined
-      >
-        <Block middle center>
-          <Text primary bold h3 subtitle>
-            {(destination && destination.description) || "PICK DESTINATION"}
-          </Text>
+      <Block row>
+        <Block>
+          <Picker
+            selectedValue={selectedProduct}
+            onValueChange={(itemValue, itemIndex) => {
+              console.log(itemValue, itemIndex);
+              setSelectedProduct(itemValue);
+            }}
+          >
+            <Picker.Item label="Select produce" value="" />
+            {products.map(product => (
+              <Picker.Item key={product} label={product} value={product} />
+            ))}
+          </Picker>
         </Block>
-      </Button>
+        <Block>
+          {selectedProduct !== "" ? (
+            <Button
+              flex={1}
+              marginRight={5}
+              onPress={() => {
+                props.navigation.push("DestinationPicker", {
+                  setDestination: geometry => {
+                    setDestination(geometry);
+                    props.navigation.pop();
+                  },
+                  product: selectedProduct
+                });
+              }}
+              marginTop={10}
+              primary
+              outlined
+            >
+              <Block middle center>
+                <Text primary bold h3 subtitle>
+                  {(destination && destination.description) ||
+                    "PICK DESTINATION"}
+                </Text>
+              </Block>
+            </Button>
+          ) : null}
+        </Block>
+      </Block>
 
       <Block row>
         <Block center middle flex={0} marginRight={10}>

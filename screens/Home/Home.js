@@ -22,7 +22,7 @@ const Home = props => {
           </Text>
         </Block>
 
-        <Block flex={0}>
+        {/* <Block flex={0}>
           <TouchableWithoutFeedback
             onPress={() => {
               setLocale(locale === "en" ? "hi" : "en");
@@ -32,7 +32,7 @@ const Home = props => {
               <MaterialIcons name="language" color="black" size={30} />
             </Block>
           </TouchableWithoutFeedback>
-        </Block>
+        </Block> */}
 
         <Block flex={0}>
           <TouchableWithoutFeedback

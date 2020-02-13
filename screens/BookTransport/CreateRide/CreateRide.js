@@ -114,6 +114,7 @@ const CreateRide = props => {
           props.navigation.push("DestinationPicker", {
             setDestination: geometry => {
               setDestination(geometry);
+              console.log(geometry)
               props.navigation.pop();
             }
           });
@@ -141,7 +142,7 @@ const CreateRide = props => {
               color={COLORS.primary}
               size={30}
             />
-            <Text primary bold subtitle>
+            <Text marginLeft={10} primary bold subtitle>
               EDIT TRUCK INFO
             </Text>
           </Block>
