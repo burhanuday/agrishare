@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TouchableWithoutFeedback, AsyncStorage } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Block, Text } from "../../components/index";
@@ -7,11 +7,20 @@ import * as Localization from "expo-localization";
 
 const Home = props => {
   const [locale, setLocale] = useState("en");
+  const [userType, setUserType] = useState("");
   console.log("locale", locale);
 
   const getLocaleLanguage = (english, hindi) => {
     return locale === "en" ? english : hindi;
   };
+
+  useEffect(() => {
+    const getUserType = async () => {
+      const userType = await AsyncStorage.getItem("userType");
+      setUserType(userType);
+    };
+    getUserType();
+  });
 
   return (
     <Block safe white>
@@ -22,7 +31,7 @@ const Home = props => {
           </Text>
         </Block>
 
-        {/* <Block flex={0}>
+        <Block flex={0}>
           <TouchableWithoutFeedback
             onPress={() => {
               setLocale(locale === "en" ? "hi" : "en");
@@ -32,7 +41,7 @@ const Home = props => {
               <MaterialIcons name="language" color="black" size={30} />
             </Block>
           </TouchableWithoutFeedback>
-        </Block> */}
+        </Block>
 
         <Block flex={0}>
           <TouchableWithoutFeedback
@@ -65,19 +74,19 @@ const Home = props => {
               props.navigation.push("BookTransport");
             }}
           />
-          <NavigationItem
-            icon="truck-delivery"
-            title={getLocaleLanguage(
-              "See booked transport",
-              "दर्ज परिवहन देखना"
-            )}
-            onPress={() => {
-              props.navigation.push("SeeBookedTransport");
-            }}
-          />
-        </Block>
-        <Block marginTop={10} row flex={0.2}>
-          <Block row flex={0.83}>
+
+          {userType === "farmer" ? (
+            <NavigationItem
+              icon="truck-delivery"
+              title={getLocaleLanguage(
+                "See booked transport",
+                "दर्ज परिवहन देखना"
+              )}
+              onPress={() => {
+                props.navigation.push("SeeBookedTransport");
+              }}
+            />
+          ) : (
             <NavigationItem
               icon="steering"
               title={getLocaleLanguage("My Created Rides", "मेरी सवारी")}
@@ -85,7 +94,7 @@ const Home = props => {
                 props.navigation.push("MyCreatedRides");
               }}
             />
-          </Block>
+          )}
         </Block>
       </Block>
     </Block>

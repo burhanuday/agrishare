@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, AsyncStorage, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  AsyncStorage,
+  ActivityIndicator,
+  Picker
+} from "react-native";
 import {
   Block,
   Text,
@@ -13,6 +18,7 @@ import axios from "../../axios/axios";
 const Auth = props => {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState("farmer");
 
   const smoothLogin = async () => {
     const _id = await AsyncStorage.getItem("_id");
@@ -56,7 +62,7 @@ const Auth = props => {
           ily
         </Text>
       </Block>
-      <Block paddingHorizontal={20} flex={0.5}>
+      <Block paddingHorizontal={20} flex={0.55}>
         <Card flex={1} padding={30} shadow elevation={10}>
           <Block>
             <Text bold size={32}>
@@ -74,6 +80,22 @@ const Auth = props => {
               autoCompleteType="tel"
               keyboardType="phone-pad"
             />
+
+            <Block>
+              <Text bold marginTop={18}>
+                Are you a:
+              </Text>
+              <Picker
+                selectedValue={userType}
+                onValueChange={(itemValue, itemIndex) => {
+                  console.log(itemValue, itemIndex);
+                  setUserType(itemValue);
+                }}
+              >
+                <Picker.Item label="Farmer" value="farmer" />
+                <Picker.Item label="Driver" value="driver" />
+              </Picker>
+            </Block>
             <Text color="#b2b2b2" marginTop={18} caption>
               A 10 digit OTP will be sent via SMS to verify your mobile number
             </Text>
@@ -100,6 +122,7 @@ const Auth = props => {
                 await AsyncStorage.setItem("_id", data.user._id);
                 await AsyncStorage.setItem("name", data.user.name);
                 await AsyncStorage.setItem("phone", data.user.phone);
+                await AsyncStorage.setItem("userType", userType);
                 setLoading(false);
                 props.navigation.navigate("Authenticated");
               })

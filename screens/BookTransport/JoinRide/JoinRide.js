@@ -110,6 +110,11 @@ const JoinRide = props => {
 
   return (
     <React.Fragment>
+      <Block center>
+        <Text h3 bold primary>
+          Join ride
+        </Text>
+      </Block>
       <Block row>
         <Block>
           <Picker

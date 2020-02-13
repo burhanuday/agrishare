@@ -4,7 +4,8 @@ import {
   Image,
   SafeAreaView,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native";
 import { Block, Card, Button, Text, COLORS } from "../../components/index";
 import MapView, { Marker } from "react-native-maps";
@@ -58,6 +59,16 @@ const BookTransport = props => {
         longitude: location.coords.longitude
       });
     });
+
+    const getUserType = async () => {
+      const userType = await AsyncStorage.getItem("userType");
+      if (userType === "farmer") {
+        setMode(0);
+      } else {
+        setMode(1);
+      }
+    };
+    getUserType();
   }, []);
   return (
     <Block safe>
@@ -87,7 +98,7 @@ const BookTransport = props => {
             </Block>
           ) : (
             <React.Fragment>
-              <Block row paddingLeft={20} paddingRight={20}>
+              {/* <Block row paddingLeft={20} paddingRight={20}>
                 <Block flex={1}>
                   <Button
                     style={{
@@ -133,7 +144,7 @@ const BookTransport = props => {
                     </Block>
                   </Button>
                 </Block>
-              </Block>
+              </Block> */}
               {mode ? (
                 <CreateRide
                   region={region}

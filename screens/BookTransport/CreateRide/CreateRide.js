@@ -107,6 +107,11 @@ const CreateRide = props => {
 
   return (
     <React.Fragment>
+      <Block center>
+        <Text h3 bold primary>
+          Create ride
+        </Text>
+      </Block>
       <Button
         flex={1}
         marginRight={5}
@@ -114,7 +119,7 @@ const CreateRide = props => {
           props.navigation.push("DestinationPicker", {
             setDestination: geometry => {
               setDestination(geometry);
-              console.log(geometry)
+              console.log(geometry);
               props.navigation.pop();
             }
           });
