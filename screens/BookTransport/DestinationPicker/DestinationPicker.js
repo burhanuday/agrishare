@@ -79,4 +79,8 @@ const DestinationPicker = props => {
   );
 };
 
+DestinationPicker.navigationOptions = {
+  title: "Pick Destination"
+};
+
 export default DestinationPicker;
