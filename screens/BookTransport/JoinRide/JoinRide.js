@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AsyncStorage, Switch, Picker } from "react-native";
 import { Block, Text, Input, Button, COLORS } from "../../../components/index";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { products } from "../DestinationPicker/data";
+import {
+  join_ride,
+  capacity as cap_t,
+  are_your_goods_perishable,
+  are_your_goods_fragile,
+  schedule
+} from "../../../helpers/languageHelper";
 
 import moment from "moment";
 import axios from "../../../axios/axios";
@@ -13,6 +20,7 @@ todaysDate.setDate(todaysDate.getDate() + 1);
 todaysDate2.setDate(todaysDate2.getDate() + 5);
 
 const JoinRide = props => {
+  const [locale, setLocale] = useState("en");
   const [showStartDatePicker, setShowStartDatePicker] = useState({
     visible: false,
     date: todaysDate
@@ -28,6 +36,15 @@ const JoinRide = props => {
   const [isPerishable, setIsPerishable] = useState(false);
   const [isFragile, setIsFragile] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState("");
+
+  useEffect(() => {
+    const setDefaultLanguage = async () => {
+      const loc = await AsyncStorage.getItem("locale");
+      setLocale(loc);
+    };
+
+    setDefaultLanguage();
+  });
 
   const createTransportRequest = async () => {
     let errors = [];
@@ -112,7 +129,7 @@ const JoinRide = props => {
     <React.Fragment>
       <Block center>
         <Text h3 bold primary>
-          Join ride
+          {join_ride(locale)}
         </Text>
       </Block>
       <Block row>
@@ -161,7 +178,7 @@ const JoinRide = props => {
 
       <Block row>
         <Block center middle flex={0} marginRight={10}>
-          <Text>Capacity:</Text>
+          <Text>{cap_t(locale)}:</Text>
         </Block>
         <Block>
           <Input
@@ -183,7 +200,7 @@ const JoinRide = props => {
       </Block>
 
       <Block marginTop={10} row space="around">
-        <Text>Are your goods perishable?</Text>
+        <Text>{are_your_goods_perishable(locale)}</Text>
         <Switch
           value={isPerishable}
           onValueChange={val => setIsPerishable(val)}
@@ -191,7 +208,7 @@ const JoinRide = props => {
       </Block>
 
       <Block marginTop={10} row space="around">
-        <Text>Are your goods fragile?</Text>
+        <Text>{are_your_goods_fragile(locale)}</Text>
         <Switch value={isFragile} onValueChange={val => setIsFragile(val)} />
       </Block>
 
@@ -268,7 +285,7 @@ const JoinRide = props => {
       >
         <Block middle center>
           <Text white bold h3>
-            SCHEDULE
+            {schedule(locale)}
           </Text>
         </Block>
       </Button>

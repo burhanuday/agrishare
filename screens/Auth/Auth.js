@@ -123,6 +123,7 @@ const Auth = props => {
                 await AsyncStorage.setItem("name", data.user.name);
                 await AsyncStorage.setItem("phone", data.user.phone);
                 await AsyncStorage.setItem("userType", userType);
+                await AsyncStorage.setItem("locale", "en");
                 setLoading(false);
                 props.navigation.navigate("Authenticated");
               })

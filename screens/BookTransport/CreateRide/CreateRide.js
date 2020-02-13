@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AsyncStorage, StyleSheet } from "react-native";
 import { Block, Text, Input, Button, COLORS } from "../../../components/index";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TruckInfoModal from "./TruckInfoModal";
+import {
+  create_ride,
+  pick_destination,
+  edit_truck_info,
+  departure
+} from "../../../helpers/languageHelper";
 
 import moment from "moment";
 import axios from "../../../axios/axios";
@@ -13,9 +19,19 @@ const todaysDate = new Date();
 todaysDate.setDate(todaysDate.getDate() + 5);
 
 const CreateRide = props => {
+  const [locale, setLocale] = useState("en");
   const [showDepartureDatePicker, setShowDepartureDatePicker] = useState({
     visible: false,
     date: todaysDate
+  });
+
+  useEffect(() => {
+    const setDefaultLanguage = async () => {
+      const loc = await AsyncStorage.getItem("locale");
+      setLocale(loc);
+    };
+
+    setDefaultLanguage();
   });
 
   const [destination, setDestination] = useState(null);
@@ -109,7 +125,7 @@ const CreateRide = props => {
     <React.Fragment>
       <Block center>
         <Text h3 bold primary>
-          Create ride
+          {create_ride(locale)}
         </Text>
       </Block>
       <Button
@@ -130,7 +146,8 @@ const CreateRide = props => {
       >
         <Block middle center>
           <Text primary bold h3 subtitle>
-            {(destination && destination.description) || "PICK DESTINATION"}
+            {(destination && destination.description) ||
+              pick_destination(locale)}
           </Text>
         </Block>
       </Button>
@@ -148,7 +165,7 @@ const CreateRide = props => {
               size={30}
             />
             <Text marginLeft={10} primary bold subtitle>
-              EDIT TRUCK INFO
+              {edit_truck_info(locale)}
             </Text>
           </Block>
         </Button>
@@ -156,7 +173,7 @@ const CreateRide = props => {
 
       <Block row>
         <Block center middle flex={0}>
-          <Text>Departure:</Text>
+          <Text>{departure(locale)}:</Text>
         </Block>
         <Button
           flex={1}
@@ -194,7 +211,7 @@ const CreateRide = props => {
       >
         <Block middle center>
           <Text white bold h3>
-            CREATE RIDE
+            {create_ride(locale)}
           </Text>
         </Block>
       </Button>
