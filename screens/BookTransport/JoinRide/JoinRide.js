@@ -8,7 +8,8 @@ import {
   capacity as cap_t,
   are_your_goods_perishable,
   are_your_goods_fragile,
-  schedule
+  schedule,
+  pick_destination
 } from "../../../helpers/languageHelper";
 
 import moment from "moment";
@@ -168,7 +169,7 @@ const JoinRide = props => {
               <Block middle center>
                 <Text primary bold h3 subtitle>
                   {(destination && destination.description) ||
-                    "PICK DESTINATION"}
+                    pick_destination(locale)}
                 </Text>
               </Block>
             </Button>
