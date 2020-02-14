@@ -32,7 +32,7 @@ const CreateRide = props => {
     };
 
     setDefaultLanguage();
-  });
+  }, []);
 
   const [destination, setDestination] = useState(null);
   const [capacity, setCapacity] = useState(null);

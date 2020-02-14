@@ -3,7 +3,6 @@ import { StyleSheet, Linking } from "react-native";
 import { Block, Text, Card, Button, COLORS } from "../../components";
 import Axios from "axios";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import moment from "moment";
 
 const PoolerListRow = props => {
   const [cost, setCost] = useState(0);
@@ -80,24 +79,9 @@ const PoolerListRow = props => {
 };
 
 const styles = StyleSheet.create({
-  divider: {
-    height: 1,
-    backgroundColor: "rgba(0,0,0,0.1)",
-    marginTop: 7,
-    marginBottom: 7,
-    marginLeft: 20,
-    marginRight: 20
-  },
-  button: {
-    width: 120,
-    height: 30
-  },
   callButton: {
     width: 120,
     height: 30
-  },
-  container: {
-    justifyContent: "space-between"
   }
 });
 

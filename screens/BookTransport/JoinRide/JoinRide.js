@@ -45,7 +45,7 @@ const JoinRide = props => {
     };
 
     setDefaultLanguage();
-  });
+  }, []);
 
   const createTransportRequest = async () => {
     let errors = [];

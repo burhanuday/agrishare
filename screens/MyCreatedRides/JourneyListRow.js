@@ -279,10 +279,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 30
   },
-  callButton: {
-    width: 120,
-    height: 30
-  },
   container: {
     justifyContent: "space-between"
   }

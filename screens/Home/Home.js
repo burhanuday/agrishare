@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TouchableWithoutFeedback, AsyncStorage } from "react-native";
+import { TouchableWithoutFeedback, AsyncStorage, Picker } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Block, Text } from "../../components/index";
 import NavigationItem from "./NavigationItem/NavigationItem";
@@ -31,7 +31,7 @@ const Home = props => {
     };
 
     setDefaultLanguage();
-  });
+  }, []);
 
   return (
     <Block safe white>
@@ -42,17 +42,23 @@ const Home = props => {
           </Text>
         </Block>
 
-        <Block flex={0}>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              AsyncStorage.setItem("locale", locale === "en" ? "hi" : "en");
-              setLocale(locale === "en" ? "hi" : "en");
+        <Block row flex={0} middle center>
+          <MaterialIcons name="language" color="black" size={30} />
+          <Picker
+            selectedValue={locale}
+            style={{width: 120}}
+            onValueChange={(itemValue, itemIndex) => {
+              console.log(itemValue, itemIndex);
+              setLocale(itemValue);
+              AsyncStorage.setItem("locale", itemValue);
             }}
           >
-            <Block flex={0} marginRight={10} marginTop={10}>
-              <MaterialIcons name="language" color="black" size={30} />
-            </Block>
-          </TouchableWithoutFeedback>
+            <Picker.Item label="English" value="en" />
+            <Picker.Item label="Hindi" value="hi" />
+            <Picker.Item label="Bengali" value="bn" />
+            <Picker.Item label="Gujarati" value="gj" />
+            <Picker.Item label="Kannada" value="kd" />
+          </Picker>
         </Block>
 
         <Block flex={0}>
