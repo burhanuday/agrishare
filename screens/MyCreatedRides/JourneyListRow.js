@@ -4,6 +4,7 @@ import { Block, Text, Card, Button, COLORS } from "../../components";
 import Axios from "axios";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import moment from "moment";
+import PoolerListRow from "./PoolerListRow";
 
 const JourneyListRow = props => {
   const [startAddress, setStartAddress] = useState("");
@@ -34,22 +35,22 @@ const JourneyListRow = props => {
     //console.tron.log("be legs");
 
     const legs = result.data.routes[0].legs;
-    console.tron.log(result);
+    //console.tron.log(result);
 
-    console.tron.log("legs", legs);
+    //console.tron.log("legs", legs);
 
     for (var i = 0; i < legs.length; ++i) {
       totalDistance += legs[i].distance.value;
       totalDuration += legs[i].duration.value;
     }
-    console.tron.log("duration", totalDistance, totalDuration);
+    //console.tron.log("duration", totalDistance, totalDuration);
     return { totalDistance, totalDuration };
   };
 
   const fetchData = async () => {
-    console.tron.log("req", props.journey);
+    //console.tron.log("req", props.journey);
     const journey = props.journey.item;
-    console.tron.log("journe", props.journey.item);
+    //console.tron.log("journe", props.journey.item);
 
     //console.tron.log("jour", journey);
     const start = journey.start;
@@ -69,7 +70,7 @@ const JourneyListRow = props => {
       const responseEnd = await Axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end.lat},${end.lng}&key=AIzaSyB_6Gc31BMUDvuSEMz8AYWjTbza4UvytmQ`
       );
-      console.tron.log("dur in main fn", duration);
+      //console.tron.log("dur in main fn", duration);
 
       const endAddress = responseEnd.data.results[0].formatted_address;
       //console.tron.log("result", endAddress.formatted_address);
@@ -108,7 +109,9 @@ const JourneyListRow = props => {
   };
 
   useEffect(() => {
-    fetchData().then(res => console.log(res));
+    fetchData().then(res => {
+      //console.log(res)
+    });
   }, [props]);
 
   const getHoursFromSeconds = seconds => {
@@ -134,6 +137,9 @@ const JourneyListRow = props => {
 
   return (
     <Card margin={5} outlined>
+      {
+        //console.log(props.journey)
+      }
       <Block style={styles.container} padding={5}>
         <Block row marginBottom={10}>
           <Block paddingLeft={5} paddingRight={5} flex={1}>
@@ -236,43 +242,9 @@ const JourneyListRow = props => {
           <Text primary small>
             POOLERS
           </Text>
-          {acceptedRequests.map(request => (
-            <Card key={request._id} marginTop={7} outlined>
-              <Block row middle center>
-                {console.tron.log("person data", request)}
-                <Block>
-                  <Block>
-                    <Text black bold size={18}>
-                      {request.requestId.userId.name}
-                    </Text>
-                  </Block>
-                  <Block>
-                    <Text gray>Capacity: {request.capacityRequired}</Text>
-                  </Block>
-                </Block>
-                <Block center>
-                  <Button
-                    onPress={() => {
-                      Linking.openURL(`tel:${request.requestId.userId.phone}`);
-                    }}
-                    outlined
-                    style={styles.callButton}
-                  >
-                    <Block middle center row>
-                      <MaterialCommunityIcons
-                        name="phone"
-                        color={COLORS.primary}
-                        size={20}
-                      />
-                      <Text subtitle primary>
-                        CALL PHONE
-                      </Text>
-                    </Block>
-                  </Button>
-                </Block>
-              </Block>
-            </Card>
-          ))}
+          {acceptedRequests.map(request => {
+            return <PoolerListRow request={request} />;
+          })}
         </Block>
       </Block>
 
